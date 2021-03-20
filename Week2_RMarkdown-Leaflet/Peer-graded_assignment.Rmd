@@ -1,0 +1,49 @@
+---
+title: "Developing Data Products - Week2 Assignment"
+author: "Carlos Sanchez"
+date: "16/03/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r libraries, message=FALSE}
+library(leaflet)
+library(dplyr)
+```
+
+
+```{r}
+zipFile <- "BigCities.zip"
+
+if(!file.exists(zipFile)){
+  fileUrl <- "https://simplemaps.com/static/data/world-cities/basic/simplemaps_worldcities_basicv1.73.zip"
+  download.file(url = fileUrl, destfile = zipFile, method = "curl")
+}
+
+unzip("BigCities.zip")
+```
+
+
+# World Cities with population above 15 Million
+
+```{r, message=FALSE}
+worldcities <- read.csv("~/R courses/9_Developing_Data_Products/Week2_RMarkdown-Leaflet/worldcities.csv")
+worldcities <- worldcities[worldcities$population>=15000000,] %>% 
+  mutate(color= ifelse(population>30000000, "red", ifelse(population>20000000, "yellow", "green"))) %>% 
+  filter(!is.na(population))
+
+worldcities%>% 
+  leaflet() %>% 
+  addTiles() %>%
+  addCircles(weight = 1, radius = worldcities$population/50, fillColor = worldcities$color) %>% 
+  addMarkers(popup = paste(worldcities$city_ascii, ": ", worldcities$population/1e6, " millions")) %>% 
+  addLegend(labels = c("> 30 Millions", "> 20 Millions", "> 15 Millions"), colors = c("red", "yellow", "green"))
+
+
+```
+
+Source: "https://simplemaps.com/data/world-cities"
+

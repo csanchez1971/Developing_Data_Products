@@ -1,0 +1,183 @@
+---
+title: "Week1 - Shiny_plotly_GoogleVis"
+author: "Carlos Sanchez"
+date: "15/03/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, device = "quarz")
+```
+
+# GoogleVis
+
+```{r}
+suppressPackageStartupMessages(library(googleVis))
+
+M <- gvisMotionChart(Fruits, idvar="Fruit", timevar="Year",
+                     options = list(width = 600, height=400))
+print(M, "chart")
+```
+
+```{r, results="asis"}
+data(Exports)
+levels(Exports$Country) <- c(levels(Exports$Country), "Switzerland")
+Exports <- rbind(Exports, c("Switzerland", 11, TRUE))
+ gchart <-  gvisGeoChart(data = Exports, 
+                      locationvar='Country',
+                      colorvar='Profit',
+                      options=list(projection="kavrayskiy-vii", 
+                                   region= "150",
+                                   width=1200, height=800))
+ plot(gchart)
+```
+
+```{r}
+G <- gvisGeoChart(Exports, "Country", "Profit", options = list(width=200, height=100))
+T1 <- gvisTable(Exports, options = list(width=200, height=270))
+GT <- gvisMerge(G, T1, horizontal = FALSE, tableOptions = "bgcolor=\"#CCCCCC\" cellspacing=10")
+print(GT)
+```
+
+# Plotly
+
+## **Scatter Plot**
+
+```{r echo=FALSE, message=FALSE}
+plot_ly(data = mtcars, x = ~wt, y = ~mpg, mode = "markers")
+```
+
+```{r echo=FALSE, message=FALSE}
+plot_ly(data = mtcars, x = ~wt, y = ~mpg, mode = "markers", color = ~as.factor(cyl))
+
+```
+
+```{r echo=FALSE, message=FALSE}
+plot_ly(data = mtcars, x = ~wt, y = ~mpg, mode = "markers", color = ~disp)
+```
+
+## Bubble plot
+
+```{r echo=FALSE, message=FALSE}
+plot_ly(data = mtcars, x = ~wt, y = ~mpg, mode = "markers", type="scatter", color = ~as.factor(cyl),size=~hp)
+
+```
+
+```{r}
+data <- read.csv("https://raw.githubusercontent.com/plotly/datasets/master/school_earnings.csv")
+
+fig <- plot_ly(data, x = ~Women, y = ~Men, text = ~School, type = 'scatter', mode = 'markers',
+        marker = list(size = ~Gap, opacity = 0.5))
+fig <- fig %>% layout(title = 'Gender Gap in Earnings per University',
+         xaxis = list(showgrid = FALSE),
+         yaxis = list(showgrid = FALSE))
+
+fig
+```
+
+## 3d plot
+
+```{r}
+set.seed(2016-07-21)
+temp <- rnorm(100, mean = 30, sd = 5)
+pressure <- rnorm(100)
+dtime <- 1:100
+plot_ly(x=temp, y=pressure, z=dtime,
+        type = "scatter3d", mode = "markers", color = temp)
+```
+
+## Line plot
+
+```{r}
+data("airmiles")
+```
+
+```{r}
+plot_ly(x = time(airmiles), y = airmiles, mode = "lines")
+```
+
+```{r}
+library(tidyr)
+library(dplyr)
+
+```
+
+```{r}
+data("EuStockMarkets")
+stocks <- as.data.frame(EuStockMarkets) %>% 
+  gather(index, price) %>% 
+  mutate(time = rep(time(EuStockMarkets), 4))
+
+plot_ly(stocks, x = ~time, y = ~price, color = ~index, mode = "lines")
+```
+
+## Histogram
+
+```{r}
+plot_ly(x=precip, type = "histogram")
+```
+
+## Box-Plot
+
+```{r}
+plot_ly(iris, y = ~Petal.Length, color = ~Species, type = "box")
+```
+
+## Heatmap
+
+```{r}
+terrainl <- matrix(rnorm(100*100), nrow = 100, ncol = 100)
+plot_ly(z= terrainl, type = "heatmap")
+```
+
+## 3D Surface
+
+```{r}
+plot_ly(z=~terrainl, type = "surface")
+```
+
+## Choropleth Maps
+
+```{r}
+df <- read.csv("https://raw.githubusercontent.com/plotly/datasets/master/2014_world_gdp_with_codes.csv")
+
+plot_ly(df, type='choropleth', locations=df$CODE, z=df$GDP..BILLIONS., text=df$COUNTRY)
+```
+
+## 
+
+```{r}
+df <- read.csv("https://raw.githubusercontent.com/plotly/datasets/master/2011_us_ag_exports.csv")
+df$hover <- with(df, paste(state, '<br>', "Beef", beef, "Dairy", dairy, "<br>",
+                           "Fruits", total.fruits, "Veggies", total.veggies,
+                           "<br>", "Wheat", wheat, "Corn", corn))
+fig <- plot_geo(df, locationmode = 'USA-states')
+fig <- fig %>% add_trace(
+    z = ~total.exports, text = ~hover, locations = ~code,
+    color = ~total.exports, colors = 'Purples'
+  )
+fig <- fig %>% colorbar(title = "Millions USD")
+fig <- fig %>% layout(
+    title = '2011 US Agriculture Exports by State<br>(Hover for breakdown)'
+  )
+
+fig
+```
+
+## ggplot - plot_ly
+
+```{r}
+set.seed(100)
+d <- diamonds[sample(nrow(diamonds), 1000),]
+
+p <- ggplot(data = d, aes(x=carat, y = price)) +
+  geom_point() +
+  geom_smooth(aes(color = cut, fill = cut)) +
+  facet_wrap(~ cut)
+p
+
+```
+
+```{r, }
+(gg <- ggplotly(p))
+```

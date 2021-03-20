@@ -1,0 +1,43 @@
+---
+title: "Developing Data Products"
+subtitle: "Assignment - Week3"
+author: "Carlos Sanchez"
+date: "17/03/2021"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+```{r}
+library(plotly)
+library(dplyr)
+
+```
+
+## Total covid cases by Continent
+
+The present interactive plot shows the evolution of the covid cases by Continent
+
+```{r}
+covid <- read.csv("https://covid.ourworldindata.org/data/owid-covid-data.csv")
+covid2 <- covid[covid$continent!="",]
+covid2$continent <- as.factor(covid2$continent)
+covid3 <- covid2  %>% group_by(continent, date)%>% dplyr::summarise(totalCases=sum(total_cases, na.rm=T), totalDeaths=sum(total_deaths, na.rm=T)) 
+
+```
+
+```{r}
+p <- plot_ly(covid3, x = ~date, y = ~totalCases, color = ~continent, type = 'scatter', mode = 'lines')
+p
+```
+
+## Total deaths by Continent
+
+```{r}
+q <- plot_ly(covid3, x = ~date, y = ~totalDeaths, color = ~continent, type = 'scatter', mode = 'lines')
+q
+```
+
+source: [Our Worl Data](https://ourworldindata.org)

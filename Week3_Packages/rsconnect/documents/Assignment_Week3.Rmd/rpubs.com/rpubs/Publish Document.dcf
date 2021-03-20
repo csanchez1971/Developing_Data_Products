@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/740683/6c9d3efc78e84c6d998d0a39b38bd52d
+bundleId: https://api.rpubs.com/api/v1/document/740683/6c9d3efc78e84c6d998d0a39b38bd52d
+url: http://rpubs.com/csanchez1971/740683
+when: 1615998569.17297

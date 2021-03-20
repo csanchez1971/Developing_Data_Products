@@ -1,0 +1,78 @@
+---
+title: "Swirl"
+author: "Carlos Sanchez"
+date: "17/03/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(swirlify)
+```
+
+```{r}
+new_lesson("Lesson 1", "My first Course")
+```
+
+```{r}
+wq_message()
+```
+
+```{r}
+wq_command()
+```
+
+
+```{r}
+add_to_manifest()
+```
+
+```{r}
+test_lesson()
+```
+
+```{r}
+demo_lesson()
+```
+
+```{r}
+get_current_lesson()
+```
+
+```{r}
+new_lesson("Lesson 2", "My first Course")
+```
+
+```{r}
+wq_multiple()
+```
+
+```{r}
+add_to_manifest()
+```
+
+```{r}
+test_lesson()
+```
+
+```{r}
+demo_lesson()
+```
+
+
+```{r}
+wq_figure()  #plot(1:10)
+```
+
+```{r}
+wq_figure()    #Add a line
+```
+
+```{r}
+demo_lesson()
+```
+
+

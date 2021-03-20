@@ -1,0 +1,46 @@
+Peer-graded assignment - RStudio Presenter
+========================================================
+author: Carlos Sanchez
+date: 19/March/2021
+autosize: true
+
+Introduction
+========================================================
+
+The current 'RStudio Presenter' presentation will include the following sections:
+
+1. Presentation's cover
+2. Summary of the different sections
+3. Data loading
+4. Some Calculations
+5. Plots
+
+
+Data Loading
+========================================================
+After loading the dataset `mtcars` we display some summary data: 
+
+```{r dataLoading, font.size}
+data(mtcars); mtcars$cyl <- as.factor(mtcars$cyl); head(mtcars)
+```
+
+
+
+Some Calculations
+======================================================
+
+Linear regression of qsec (1/4 mile time vs Miles per Gallon)
+
+```{r tables}
+mod <- lm(mpg ~ qsec, data = mtcars)
+summary(mod)
+```
+
+Plots
+========================================================
+
+
+```{r plots, echo=TRUE, fig.height = 9, fig.width=18, fig.align="center"}
+library(ggplot2)
+ggplot(mtcars, aes(x=qsec, y=mpg, color=cyl)) + geom_point() + geom_smooth(method = "lm") + theme_bw()+ ggtitle("'1/4 mile time' vs 'Miles per Gallon'")
+```

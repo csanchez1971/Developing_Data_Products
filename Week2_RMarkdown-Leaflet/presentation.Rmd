@@ -1,0 +1,20 @@
+---
+title: "My First Presentation"
+author: "Carlos Sanchez"
+date: "16/03/2021"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## My New Slide
+
+Some content
+
+## My title
+
+### A top level subheading
+
+### A second level subheading
